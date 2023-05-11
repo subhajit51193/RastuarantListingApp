@@ -1,17 +1,12 @@
 package com.app.model;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -20,8 +15,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,26 +27,32 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer {
+public class Restaurant {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer custId;
-	private String firstName;
-	private String lastName;
+	private Integer restaurantId;
+	private String name;
+	private String address;
+	private Integer phone;
+	private Integer rating;
 	
-	@Column(unique = true)
-	private String email;
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-	private String password;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "location_id")
+	private Location location;
 	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "restaurant_cuisine_id",
+            joinColumns = @JoinColumn(
+                    name = "restaurant_id", referencedColumnName = "restaurantId"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "cuisine_id", referencedColumnName = "cuisineId"
+            )
+    )
+	private Set<Cuisin> cuisins = new HashSet<>();
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
-	private List<Authority> authorities = new ArrayList<>();
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "order_id",referencedColumnName = "orderDetailsId")
-	private OrderDetails orderDetails;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
 	private Set<Review> reviews = new HashSet<>();

@@ -56,4 +56,9 @@ public class Restaurant {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
 	private Set<Review> reviews = new HashSet<>();
+	
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "cust_id")
+	private Customer customer;
 }

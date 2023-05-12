@@ -49,9 +49,6 @@ public class Customer {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
 	private List<Authority> authorities = new ArrayList<>();
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "order_id",referencedColumnName = "orderDetailsId")
-	private OrderDetails orderDetails;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
 	private Set<Review> reviews = new HashSet<>();

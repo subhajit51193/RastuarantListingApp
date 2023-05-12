@@ -1,10 +1,6 @@
 package com.app.model;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -13,8 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,19 +21,16 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Location {
+@Table(name = "Orders")
+public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer locationId;
-	private String city;
-	private String state;
-	private String country;
+	private Integer orderId;
 	
-	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "location")
-	private Set<Restaurant> restaurants = new HashSet<>();
+	private Double totalBill;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "cust_id")
-	private Customer customer;
+	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JoinColumn(name = "order_id",referencedColumnName = "orderId")
+	private Set<Cart> cart;
 }

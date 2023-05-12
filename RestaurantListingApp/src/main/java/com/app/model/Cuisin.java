@@ -32,10 +32,15 @@ public class Cuisin {
 	private Integer cuisineId;
 	private String cuisineName;
 	
+	private Double price;
 	@ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     }, fetch = FetchType.EAGER,
     mappedBy = "cuisins")
 	private Set<Restaurant> restaurants = new HashSet<>();
+	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "cust_id")
+	private Customer customer;
 }

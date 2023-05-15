@@ -34,7 +34,7 @@ public class Restaurant {
 	private Integer restaurantId;
 	private String name;
 	private String address;
-	private Integer phone;
+	private String phone;
 	private Integer rating;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

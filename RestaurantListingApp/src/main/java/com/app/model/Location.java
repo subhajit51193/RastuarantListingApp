@@ -14,6 +14,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -39,8 +41,15 @@ public class Location {
 	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "location")
 	private Set<Restaurant> restaurants = new HashSet<>();
 	
-	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "cust_id")
-	private Customer customer;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(
+            name = "locations_customers",
+            joinColumns = @JoinColumn(
+                    name = "location_id", referencedColumnName = "locationId"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "cust_id", referencedColumnName = "custId"
+            )
+    )
+	private Set<Customer> customers = new HashSet<>();
 }

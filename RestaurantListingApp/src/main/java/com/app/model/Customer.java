@@ -52,4 +52,35 @@ public class Customer {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
 	private Set<Review> reviews = new HashSet<>();
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(
+            name = "users_restaurants",
+            joinColumns = @JoinColumn(
+                    name = "cust_id", referencedColumnName = "custId"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "restaurant_id", referencedColumnName = "restaurantId"
+            )
+    )
+	private Set<Restaurant> restaurants = new HashSet<>();
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(
+            name = "users_cuisins",
+            joinColumns = @JoinColumn(
+                    name = "cust_id", referencedColumnName = "custId"
+            ),
+            inverseJoinColumns = @JoinColumn(
+                    name = "cuisin_id", referencedColumnName = "cuisineId"
+            )
+    )
+	private Set<Cuisin> cuisines = new HashSet<>();
+	
+	@ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.EAGER,
+    mappedBy = "customers")
+	private Set<Location> locations = new HashSet<>();
 }

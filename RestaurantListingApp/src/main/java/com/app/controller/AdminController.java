@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.exception.CuisinException;
 import com.app.exception.RestaurantException;
 import com.app.model.Cuisin;
 import com.app.model.Restaurant;
@@ -32,7 +33,7 @@ public class AdminController {
 	}
 	
 	@PostMapping("/addCuisin/{id}")
-	public ResponseEntity<Cuisin> addCuisinHandler(@RequestBody Cuisin cuisin, @PathVariable("id") Integer restaurantId) throws RestaurantException{
+	public ResponseEntity<Cuisin> addCuisinHandler(@RequestBody Cuisin cuisin, @PathVariable("id") Integer restaurantId) throws RestaurantException, CuisinException{
 		Cuisin newCuisin = cuisinService.addCuisin(restaurantId, cuisin);
 		return new ResponseEntity<Cuisin>(newCuisin,HttpStatus.ACCEPTED);
 	}

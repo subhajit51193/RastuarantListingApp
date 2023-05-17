@@ -1,10 +1,12 @@
 package com.app.service;
 
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.app.exception.CuisinException;
 import com.app.exception.RestaurantException;
 import com.app.model.Cuisin;
 import com.app.model.Restaurant;
@@ -21,7 +23,7 @@ public class CuisinServiceImpl implements CuisinService{
 	private CuisinRepository cuisinRepository;
 	
 	@Override
-	public Cuisin addCuisin(Integer restaurantId, Cuisin cuisin) throws RestaurantException {
+	public Cuisin addCuisin(Integer restaurantId, Cuisin cuisin) throws RestaurantException, CuisinException {
 		
 		Optional<Restaurant> opt = restaurantRepository.findById(restaurantId);
 		if (opt.isEmpty()) {
@@ -30,19 +32,18 @@ public class CuisinServiceImpl implements CuisinService{
 		else {
 			Restaurant restaurant = opt.get();
 			
-			if (cuisinRepository.findByCuisineName(cuisin.getCuisineName()).isEmpty()) {
-				restaurant.getCuisins().add(cuisin);
-				cuisin.getRestaurants().add(restaurant);
-				restaurantRepository.save(restaurant);
-				return cuisinRepository.save(cuisin);
-			}
-			else {
-				Cuisin updateCuisin = cuisinRepository.findByCuisineName(cuisin.getCuisineName()).get();
-				restaurant.getCuisins().add(updateCuisin);
-				cuisin.getRestaurants().add(restaurant);
-				restaurantRepository.save(restaurant);
-				return cuisinRepository.save(updateCuisin);
-			}
+				Set<Cuisin> existingCuisins = restaurant.getCuisins();
+				if (existingCuisins.contains(cuisin)) {
+					throw new CuisinException("Already exists");
+				}
+				else {
+					restaurant.getCuisins().add(cuisin);
+					cuisin.getRestaurants().add(restaurant);
+					restaurantRepository.save(restaurant);
+					return cuisinRepository.save(cuisin);
+				}
+				
+			
 			
 		}
 	}

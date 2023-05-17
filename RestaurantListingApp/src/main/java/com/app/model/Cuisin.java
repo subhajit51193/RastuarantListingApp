@@ -40,7 +40,10 @@ public class Cuisin {
     mappedBy = "cuisins")
 	private Set<Restaurant> restaurants = new HashSet<>();
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "cust_id")
-	private Customer customer;
+	@ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.EAGER,
+    mappedBy = "cuisines")
+	private Set<Customer> customers = new HashSet<>();
 }

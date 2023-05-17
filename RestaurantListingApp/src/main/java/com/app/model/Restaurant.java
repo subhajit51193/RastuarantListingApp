@@ -37,9 +37,12 @@ public class Restaurant {
 	private String phone;
 	private Integer rating;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "location_id")
-	private Location location;
+	@ManyToMany(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.MERGE
+    }, fetch = FetchType.EAGER,
+    mappedBy = "restaurants")
+	private Set<Location> locations = new HashSet<>();
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
@@ -64,4 +67,6 @@ public class Restaurant {
     }, fetch = FetchType.EAGER,
     mappedBy = "restaurants")
 	private Set<Customer> customers = new HashSet<>();
+	
+	
 }

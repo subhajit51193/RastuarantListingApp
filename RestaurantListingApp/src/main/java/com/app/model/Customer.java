@@ -49,13 +49,15 @@ public class Customer {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
 	private List<Authority> authorities = new ArrayList<>();
 	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
+	private Set<Order> orders = new HashSet<>();
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
 	private Set<Review> reviews = new HashSet<>();
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
-            name = "users_restaurants",
+            name = "customers_restaurants",
             joinColumns = @JoinColumn(
                     name = "cust_id", referencedColumnName = "custId"
             ),

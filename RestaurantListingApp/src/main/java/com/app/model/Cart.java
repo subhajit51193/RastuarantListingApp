@@ -1,5 +1,7 @@
 package com.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,12 +25,20 @@ public class Cart {
 	private Long cartId;
 	
 	@ManyToOne
+	@JsonIgnore
+	private Customer customer;
+	
+	@ManyToOne
 	@JoinColumn(name = "restaurant_id")
 	private Restaurant restaurant;
 	
 	@ManyToOne
 	@JoinColumn(name = "cuisine_id")
 	private Cuisin cuisin;
+	
+	@ManyToOne
+	@JoinColumn(name = "location_id")
+	private Location location;
 	
 	private Long quantity;
 }

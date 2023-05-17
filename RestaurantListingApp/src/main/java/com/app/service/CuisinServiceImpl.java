@@ -24,28 +24,12 @@ public class CuisinServiceImpl implements CuisinService{
 	
 	@Override
 	public Cuisin addCuisin(Integer restaurantId, Cuisin cuisin) throws RestaurantException, CuisinException {
+		return cuisin;
 		
-		Optional<Restaurant> opt = restaurantRepository.findById(restaurantId);
-		if (opt.isEmpty()) {
-			throw new RestaurantException("Not found");
-		}
-		else {
-			Restaurant restaurant = opt.get();
-			
-				Set<Cuisin> existingCuisins = restaurant.getCuisins();
-				if (existingCuisins.contains(cuisin)) {
-					throw new CuisinException("Already exists");
-				}
-				else {
-					restaurant.getCuisins().add(cuisin);
-					cuisin.getRestaurants().add(restaurant);
-					restaurantRepository.save(restaurant);
-					return cuisinRepository.save(cuisin);
-				}
-				
+		
 			
 			
-		}
+		
 	}
 
 	

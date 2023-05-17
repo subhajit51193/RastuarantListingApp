@@ -20,19 +20,9 @@ public class RestaurantServiceImpl implements RestaurantService{
 	
 	@Override
 	public Restaurant addRestaurant(Restaurant restaurant) throws RestaurantException {
+		return restaurant;
 		
-//		Restaurant newRestaurant =  new Restaurant();
-		if (restaurantRepository.findByPhone(restaurant.getPhone()) != null) {
-			throw new RestaurantException("Already exists");
-		}
-		else {
-//			return restaurantRepository.save(restaurant);
-			Location newLocation = restaurant.getLocation();
-			newLocation.getRestaurants().add(restaurant);
-			restaurant.setLocation(newLocation);
-			locationRepository.save(newLocation);
-			return restaurantRepository.save(restaurant);
-		}
+
 		
 	}
 

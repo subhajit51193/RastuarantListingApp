@@ -1,5 +1,7 @@
 package com.app.service;
 
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,14 @@ public class RestaurantServiceImpl implements RestaurantService{
 	
 	@Override
 	public Restaurant addRestaurant(Restaurant restaurant) throws RestaurantException {
-		return restaurant;
+		
+		Set<Location> locations = restaurant.getLocations();
+		for (Location location: locations) {
+			location.getRestaurants().add(restaurant);
+			locationRepository.save(location);
+			restaurant.getLocations().add(location);
+		}
+		return restaurantRepository.save(restaurant);
 		
 
 		

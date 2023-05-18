@@ -25,6 +25,7 @@ public class Cart {
 	private Long cartId;
 	
 	@ManyToOne
+	@JoinColumn(name = "cust_id")
 	@JsonIgnore
 	private Customer customer;
 	

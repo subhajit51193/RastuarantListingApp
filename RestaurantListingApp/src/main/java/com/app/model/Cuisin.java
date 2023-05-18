@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -39,18 +40,21 @@ public class Cuisin {
     }, fetch = FetchType.EAGER,
     mappedBy = "cuisins")
 	private Set<Restaurant> restaurants = new HashSet<>();
-	
+	/*
 	@ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     }, fetch = FetchType.EAGER,
     mappedBy = "cuisines")
 	private Set<Customer> customers = new HashSet<>();
-	
+	*/
 	@ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     }, fetch = FetchType.EAGER,
     mappedBy = "cuisins")
 	private Set<Location> locations = new HashSet<>();
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cuisin",fetch=FetchType.EAGER)
+	private Set<Review> reviews = new HashSet<>();
 }

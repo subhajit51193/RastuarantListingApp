@@ -57,16 +57,16 @@ public class Restaurant {
 	private Set<Cuisin> cuisins = new HashSet<>();
 	
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant",fetch=FetchType.EAGER)
 	private Set<Review> reviews = new HashSet<>();
 	
-	
+	/*
 	@ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     }, fetch = FetchType.EAGER,
     mappedBy = "restaurants")
 	private Set<Customer> customers = new HashSet<>();
-	
+	*/
 	
 }

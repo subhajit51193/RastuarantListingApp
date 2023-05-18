@@ -48,7 +48,7 @@ public class Location {
             )
     )
 	private Set<Restaurant> restaurants = new HashSet<>();
-	
+	/*
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
             name = "locations_customers",
@@ -60,7 +60,7 @@ public class Location {
             )
     )
 	private Set<Customer> customers = new HashSet<>();
-	
+	*/
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
             name = "locations_cuisins",

@@ -54,7 +54,7 @@ public class Customer {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "customer",fetch=FetchType.EAGER)
 	private Set<Review> reviews = new HashSet<>();
-	
+	/*
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
             name = "customers_restaurants",
@@ -85,4 +85,5 @@ public class Customer {
     }, fetch = FetchType.EAGER,
     mappedBy = "customers")
 	private Set<Location> locations = new HashSet<>();
+	*/
 }

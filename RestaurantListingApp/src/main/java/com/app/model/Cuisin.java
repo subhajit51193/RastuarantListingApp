@@ -47,13 +47,14 @@ public class Cuisin {
     }, fetch = FetchType.EAGER,
     mappedBy = "cuisines")
 	private Set<Customer> customers = new HashSet<>();
-	*/
+	
 	@ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE
     }, fetch = FetchType.EAGER,
     mappedBy = "cuisins")
 	private Set<Location> locations = new HashSet<>();
+	*/
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "cuisin",fetch=FetchType.EAGER)
 	private Set<Review> reviews = new HashSet<>();

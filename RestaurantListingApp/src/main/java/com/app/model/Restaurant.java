@@ -46,7 +46,7 @@ public class Restaurant {
 	
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
-            name = "restaurant_cuisine_id",
+            name = "restaurants_cuisines",
             joinColumns = @JoinColumn(
                     name = "restaurant_id", referencedColumnName = "restaurantId"
             ),

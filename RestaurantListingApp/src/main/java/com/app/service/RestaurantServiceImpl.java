@@ -40,6 +40,19 @@ public class RestaurantServiceImpl implements RestaurantService{
 			cuisinRepository.save(cuisin);
 			restaurant.getCuisins().add(cuisin);
 		}
+//		
+//		for (Location location: locations) {
+//			for (Cuisin cuisin: cuisins) {
+//				location.getRestaurants().add(restaurant);
+//				location.getCuisins().add(cuisin);
+//				cuisin.getLocations().add(location);
+//				cuisin.getRestaurants().add(restaurant);
+//				restaurant.getLocations().add(location);
+//				restaurant.getCuisins().add(cuisin);
+//				locationRepository.save(location);
+//				cuisinRepository.save(cuisin);
+//			}
+//		}
 		return restaurantRepository.save(restaurant);
 		
 

@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.lang.module.ResolutionException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +12,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.app.exception.CuisinException;
 import com.app.exception.CustomerException;
+import com.app.exception.LocationException;
+import com.app.exception.RestaurantException;
 import com.app.model.Authority;
 import com.app.model.Cart;
+import com.app.model.Cuisin;
 import com.app.model.Customer;
+import com.app.model.Location;
+import com.app.model.Restaurant;
+import com.app.repository.CartRepository;
 import com.app.repository.CuisinRepository;
 import com.app.repository.CustomerRepository;
 import com.app.repository.LocationRepository;
@@ -40,6 +48,9 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Autowired
 	private CuisinRepository cuisinRepository;
+	
+	@Autowired
+	private CartRepository cartRepository;
 	
 	
 	
@@ -89,7 +100,7 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Cart addToCart(Integer locationId, Integer restaurantId, Integer cuisineId) throws CustomerException {
+	public Cart addToCart(Integer locationId, Integer restaurantId, Integer cuisineId,Long quantity) throws CustomerException, LocationException, CuisinException, RestaurantException {
 		
 		Optional<Customer> opt = customerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 		System.out.println(opt.get());
@@ -98,6 +109,34 @@ public class CustomerServiceImpl implements CustomerService{
 		}
 		else {
 			Customer customer = opt.get();
+			Optional<Location> optl = locationRepository.findById(locationId);
+			Optional<Restaurant> optr = restaurantRepository.findById(restaurantId);
+			Optional<Cuisin> optc = cuisinRepository.findById(cuisineId);
+			if (optl.isEmpty()) {
+				throw new LocationException("Not found");
+			}
+			else {
+				Location location = optl.get();
+				if (optr.isEmpty()) {
+					throw new RestaurantException("Not found");
+				}
+				else {
+					Restaurant restaurant = optr.get();
+					if (optc.isEmpty()) {
+						throw new CuisinException("Not found");
+					}
+					else {
+						Cuisin cuisin = optc.get();
+						Cart cart = new Cart();
+						cart.setCustomer(customer);
+						cart.setLocation(location);
+						cart.setRestaurant(restaurant);
+						cart.setCuisin(cuisin);
+						cart.setQuantity(quantity);
+						return cartRepository.save(cart);
+					}
+				}
+			}
 			
 		}
 	}

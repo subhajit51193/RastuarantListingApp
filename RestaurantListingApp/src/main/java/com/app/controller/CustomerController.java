@@ -101,6 +101,9 @@ public class CustomerController {
 //	-------------------------------------------------------------------------------
 //	-------------------------------------------------------------------------------
 	
-	
+//	@GetMapping("/addToCart/{}")
+//	public ResponseEntity<Cart> addToCartHandler(){
+//	try request param for restaurant and location	
+//	}
 	
 }

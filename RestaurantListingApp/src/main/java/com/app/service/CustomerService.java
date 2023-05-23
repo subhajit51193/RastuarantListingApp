@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.security.core.Authentication;
 
 import com.app.exception.CustomerException;
+import com.app.model.Cart;
 import com.app.model.Customer;
 
 public interface CustomerService {
@@ -15,4 +16,8 @@ public interface CustomerService {
 	public List<Customer> getAllCustomerDetails()throws CustomerException;
 	
 	public Customer getMyDetails()throws CustomerException;
+	
+//	---------------------------------------------------------------
+	
+	public Cart addToCart(Integer locationId,Integer restaurantId,Integer cuisineId) throws CustomerException;
 }

@@ -13,8 +13,12 @@ import org.springframework.stereotype.Service;
 
 import com.app.exception.CustomerException;
 import com.app.model.Authority;
+import com.app.model.Cart;
 import com.app.model.Customer;
+import com.app.repository.CuisinRepository;
 import com.app.repository.CustomerRepository;
+import com.app.repository.LocationRepository;
+import com.app.repository.RestaurantRepository;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -26,6 +30,16 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+//	---------------------------------------
+	@Autowired
+	private LocationRepository locationRepository;
+	
+	@Autowired
+	private RestaurantRepository restaurantRepository;
+	
+	@Autowired
+	private CuisinRepository cuisinRepository;
 	
 	
 	
@@ -73,6 +87,22 @@ public class CustomerServiceImpl implements CustomerService{
 			return opt.get();
 		}
 	}
+
+	@Override
+	public Cart addToCart(Integer locationId, Integer restaurantId, Integer cuisineId) throws CustomerException {
+		
+		Optional<Customer> opt = customerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+		System.out.println(opt.get());
+		if (opt.isEmpty()) {
+			throw new CustomerException("Not found please login and try again");
+		}
+		else {
+			Customer customer = opt.get();
+			
+		}
+	}
+
+	
 
 
 

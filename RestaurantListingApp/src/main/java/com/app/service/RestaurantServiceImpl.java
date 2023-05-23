@@ -31,28 +31,12 @@ public class RestaurantServiceImpl implements RestaurantService{
 		Set<Location> locations = restaurant.getLocations();
 		for (Location location: locations) {
 			location.getRestaurants().add(restaurant);
-			locationRepository.save(location);
-			restaurant.getLocations().add(location);
 		}
 		Set<Cuisin> cuisins = restaurant.getCuisins();
 		for (Cuisin cuisin : cuisins) {
 			cuisin.getRestaurants().add(restaurant);
-			cuisinRepository.save(cuisin);
-			restaurant.getCuisins().add(cuisin);
 		}
-//		
-//		for (Location location: locations) {
-//			for (Cuisin cuisin: cuisins) {
-//				location.getRestaurants().add(restaurant);
-//				location.getCuisins().add(cuisin);
-//				cuisin.getLocations().add(location);
-//				cuisin.getRestaurants().add(restaurant);
-//				restaurant.getLocations().add(location);
-//				restaurant.getCuisins().add(cuisin);
-//				locationRepository.save(location);
-//				cuisinRepository.save(cuisin);
-//			}
-//		}
+		
 		return restaurantRepository.save(restaurant);
 		
 

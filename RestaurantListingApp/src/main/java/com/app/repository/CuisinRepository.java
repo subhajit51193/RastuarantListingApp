@@ -1,5 +1,6 @@
 package com.app.repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -9,5 +10,5 @@ import com.app.model.Cuisin;
 
 public interface CuisinRepository extends JpaRepository<Cuisin, Integer>{
 
-	public Set<Cuisin> findByCuisineName(String cuisineName);
+	public List<Cuisin> findByCuisineName(String cuisineName);
 }

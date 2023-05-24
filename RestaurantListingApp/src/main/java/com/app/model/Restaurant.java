@@ -46,16 +46,7 @@ public class Restaurant {
     mappedBy = "restaurants")
 	private Set<Location> locations = new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "restaurants_cuisines",
-            joinColumns = @JoinColumn(
-                    name = "restaurant_id", referencedColumnName = "restaurantId"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "cuisine_id", referencedColumnName = "cuisineId"
-            )
-    )
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant",fetch=FetchType.EAGER)
 	private Set<Cuisin> cuisins = new HashSet<>();
 	
 	

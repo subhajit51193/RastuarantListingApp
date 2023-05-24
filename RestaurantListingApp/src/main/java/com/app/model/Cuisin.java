@@ -37,12 +37,9 @@ public class Cuisin {
 	private Double price;
 	
 	@JsonIgnore
-	@ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    }, fetch = FetchType.EAGER,
-    mappedBy = "cuisins")
-	private Set<Restaurant> restaurants = new HashSet<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "restaurant_id")
+	private Restaurant restaurant;
 	/*
 	@ManyToMany(cascade = {
             CascadeType.PERSIST,

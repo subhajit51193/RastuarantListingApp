@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +27,58 @@ public class RestaurantServiceImpl implements RestaurantService{
 	private CuisinRepository cuisinRepository;
 	
 	@Override
-	public Restaurant addRestaurant(Restaurant restaurant) throws RestaurantException {
+	public Restaurant addRestaurant(Restaurant restaurant) throws RestaurantException {//not working need to check
 		
-		Set<Location> locations = restaurant.getLocations();
-		for (Location location: locations) {
-			location.getRestaurants().add(restaurant);
+		
+		Optional<Restaurant> optr = restaurantRepository.findByPhone(restaurant.getPhone());
+		if (optr.isEmpty()) {
+			Set<Location> locations = restaurant.getLocations();
+			for (Location location: locations) {
+				Optional<Location> optl = locationRepository.findByCity(location.getCity());
+				if (optl.isEmpty()) {
+					location.getRestaurants().add(restaurant);
+					restaurant.getLocations().add(location);
+					locationRepository.save(location);
+				}
+				else {
+					Location foundLocation = optl.get();
+					foundLocation.getRestaurants().add(restaurant);
+					restaurant.getLocations().add(foundLocation);
+					locationRepository.save(foundLocation);
+				}
+				
+			}
+			Set<Cuisin> cuisins = restaurant.getCuisins();
+			for (Cuisin cuisin : cuisins) {
+				cuisin.setRestaurant(restaurant);
+			}
+			
+			return restaurantRepository.save(restaurant);
 		}
-		Set<Cuisin> cuisins = restaurant.getCuisins();
-		for (Cuisin cuisin : cuisins) {
-			cuisin.getRestaurants().add(restaurant);
+		else {
+			Restaurant foundRestaurant = optr.get();
+			Set<Location> locations = foundRestaurant.getLocations();
+			for (Location location: locations) {
+				Optional<Location> optl = locationRepository.findByCity(location.getCity());
+				if (optl.isEmpty()) {
+					location.getRestaurants().add(foundRestaurant);
+					locationRepository.save(location);
+				}
+				else {
+					Location foundLocation = optl.get();
+					foundLocation.getRestaurants().add(foundRestaurant);
+					locationRepository.save(foundLocation);
+				}
+				
+			}
+			Set<Cuisin> cuisins = foundRestaurant.getCuisins();
+			for (Cuisin cuisin : cuisins) {
+				cuisin.setRestaurant(foundRestaurant);
+			}
+			return restaurantRepository.save(foundRestaurant);
 		}
 		
-		return restaurantRepository.save(restaurant);
-		
-
-		
+	
 	}
 
 	

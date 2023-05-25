@@ -51,6 +51,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 			Set<Cuisin> cuisins = restaurant.getCuisins();
 			for (Cuisin cuisin : cuisins) {
 				cuisin.setRestaurant(restaurant);
+				cuisinRepository.save(cuisin);
 			}
 			
 			return restaurantRepository.save(restaurant);
@@ -62,11 +63,14 @@ public class RestaurantServiceImpl implements RestaurantService{
 				Optional<Location> optl = locationRepository.findByCity(location.getCity());
 				if (optl.isEmpty()) {
 					location.getRestaurants().add(foundRestaurant);
+					restaurant.getLocations().add(location);
 					locationRepository.save(location);
+					
 				}
 				else {
 					Location foundLocation = optl.get();
 					foundLocation.getRestaurants().add(foundRestaurant);
+					restaurant.getLocations().add(foundLocation);
 					locationRepository.save(foundLocation);
 				}
 				

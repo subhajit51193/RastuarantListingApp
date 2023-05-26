@@ -57,7 +57,14 @@ public class RestaurantServiceImpl implements RestaurantService{
 				restaurant.getCuisins().add(cuisin);
 				cuisinRepository.save(cuisin);
 			}
-			return restaurantRepository.save(restaurant);
+			
+			Restaurant newRestaurant = restaurantRepository.save(restaurant);
+			if (newRestaurant != null) {
+				return newRestaurant;
+			}
+			else {
+				throw new RestaurantException("Error");
+			}
 		}
 		else {
 			Restaurant foundRestaurant = optr.get();
@@ -83,7 +90,13 @@ public class RestaurantServiceImpl implements RestaurantService{
 				foundRestaurant.getCuisins().add(cuisin);
 				cuisinRepository.save(cuisin);
 			}
-			return restaurantRepository.save(foundRestaurant);
+			Restaurant updatedRestaurant = restaurantRepository.save(foundRestaurant);
+			if (updatedRestaurant != null) {
+				return updatedRestaurant;
+			}
+			else {
+				throw new RestaurantException("Error");
+			}
 		}
 		
 	

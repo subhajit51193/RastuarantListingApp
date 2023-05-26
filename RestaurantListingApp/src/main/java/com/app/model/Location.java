@@ -37,6 +37,7 @@ public class Location {
 	private String state;
 	private String country;
 	
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(
             name = "locations_restaurants",

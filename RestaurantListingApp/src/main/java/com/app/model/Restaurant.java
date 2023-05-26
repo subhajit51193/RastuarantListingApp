@@ -38,7 +38,7 @@ public class Restaurant {
 	private String phone;
 	private Integer rating;
 	
-	@JsonIgnore
+	
 	@ManyToMany(cascade = {
             CascadeType.PERSIST,
             CascadeType.MERGE

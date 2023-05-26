@@ -29,10 +29,13 @@ public class RestaurantServiceImpl implements RestaurantService{
 	@Override
 	public Restaurant addRestaurant(Restaurant restaurant) throws RestaurantException {//not working need to check
 		
+		Set<Location> locations = restaurant.getLocations();
+		Set<Cuisin> cuisins = restaurant.getCuisins();
 		
 		Optional<Restaurant> optr = restaurantRepository.findByPhone(restaurant.getPhone());
+//		if no restaurant found
 		if (optr.isEmpty()) {
-			Set<Location> locations = restaurant.getLocations();
+			
 			for (Location location: locations) {
 				Optional<Location> optl = locationRepository.findByCity(location.getCity());
 				if (optl.isEmpty()) {
@@ -48,36 +51,37 @@ public class RestaurantServiceImpl implements RestaurantService{
 				}
 				
 			}
-			Set<Cuisin> cuisins = restaurant.getCuisins();
-			for (Cuisin cuisin : cuisins) {
+			
+			for (Cuisin cuisin: cuisins) {
 				cuisin.setRestaurant(restaurant);
+				restaurant.getCuisins().add(cuisin);
 				cuisinRepository.save(cuisin);
 			}
-			
 			return restaurantRepository.save(restaurant);
 		}
 		else {
 			Restaurant foundRestaurant = optr.get();
-			Set<Location> locations = foundRestaurant.getLocations();
+			foundRestaurant.setName(restaurant.getName());
+			foundRestaurant.setAddress(restaurant.getAddress());
 			for (Location location: locations) {
 				Optional<Location> optl = locationRepository.findByCity(location.getCity());
 				if (optl.isEmpty()) {
 					location.getRestaurants().add(foundRestaurant);
-					restaurant.getLocations().add(location);
+					foundRestaurant.getLocations().add(location);
 					locationRepository.save(location);
-					
 				}
 				else {
 					Location foundLocation = optl.get();
 					foundLocation.getRestaurants().add(foundRestaurant);
-					restaurant.getLocations().add(foundLocation);
+					foundRestaurant.getLocations().add(foundLocation);
 					locationRepository.save(foundLocation);
 				}
-				
 			}
-			Set<Cuisin> cuisins = foundRestaurant.getCuisins();
-			for (Cuisin cuisin : cuisins) {
+			
+			for (Cuisin cuisin: cuisins) {
 				cuisin.setRestaurant(foundRestaurant);
+				foundRestaurant.getCuisins().add(cuisin);
+				cuisinRepository.save(cuisin);
 			}
 			return restaurantRepository.save(foundRestaurant);
 		}

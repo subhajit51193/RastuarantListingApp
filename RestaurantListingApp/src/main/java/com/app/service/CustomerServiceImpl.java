@@ -100,44 +100,30 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Cart addToCart(Integer locationId, Integer restaurantId, Integer cuisineId,Long quantity) throws CustomerException, LocationException, CuisinException, RestaurantException {
+	public Cart addToCart(Integer cuisineId, Long quantity)
+			throws CustomerException, RestaurantException, LocationException, CuisinException {
 		
 		Optional<Customer> opt = customerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 		System.out.println(opt.get());
 		if (opt.isEmpty()) {
-			throw new CustomerException("Not found please login and try again");
+			throw new CustomerException("Not found");
 		}
 		else {
-			Customer customer = opt.get();
-			Optional<Location> optl = locationRepository.findById(locationId);
-			Optional<Restaurant> optr = restaurantRepository.findById(restaurantId);
+			Customer customer =  opt.get();
 			Optional<Cuisin> optc = cuisinRepository.findById(cuisineId);
-			if (optl.isEmpty()) {
-				throw new LocationException("Not found");
+			if (optc.isEmpty()) {
+				throw new CuisinException("Not found");
 			}
 			else {
-				Location location = optl.get();
-				if (optr.isEmpty()) {
-					throw new RestaurantException("Not found");
-				}
-				else {
-					Restaurant restaurant = optr.get();
-					if (optc.isEmpty()) {
-						throw new CuisinException("Not found");
-					}
-					else {
-						Cuisin cuisin = optc.get();
-						Cart cart = new Cart();
-						cart.setCustomer(customer);
-						cart.setLocation(location);
-						cart.setRestaurant(restaurant);
-						cart.setCuisin(cuisin);
-						cart.setQuantity(quantity);
-						return cartRepository.save(cart);
-					}
-				}
+				Cuisin cuisin = optc.get();
+				Restaurant restaurant = cuisinRepository.getRestaurantFromCuisine(cuisineId);
+				Cart cart = new Cart();
+				cart.setCustomer(customer);
+				cart.setQuantity(quantity);
+				cart.setCuisin(cuisin);
+				cart.setRestaurant(restaurant);
+				return cartRepository.save(cart);//not working properly giving error simple type, class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor...
 			}
-			
 		}
 	}
 

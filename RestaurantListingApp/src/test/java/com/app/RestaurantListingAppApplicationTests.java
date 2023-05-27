@@ -1,5 +1,6 @@
 package com.app;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
@@ -25,6 +26,8 @@ class RestaurantListingAppApplicationTests {
 	@MockBean
 	private RestaurantRepository restaurantRepository;
 	
+	
+	
 	@Test
 	void createRestaurantWithExceptionTest() {
 		
@@ -40,6 +43,19 @@ class RestaurantListingAppApplicationTests {
 				() ->{
 					restaurantService.addRestaurant(restaurant);
 				});
+	}
+	@Test
+	void createRestaurantWithoutExceptionTest() throws RestaurantException {
+		
+		Restaurant restaurant = new Restaurant();
+		restaurant.setRestaurantId(1);
+		restaurant.setName("res1");
+		restaurant.setPhone("9987456321");
+		restaurant.setAddress("DemoAddress");
+		restaurant.setRating(0);
+		
+		when(restaurantRepository.save(restaurant)).thenReturn(restaurant);
+		assertEquals(restaurant, restaurantService.addRestaurant(restaurant));
 	}
 
 }

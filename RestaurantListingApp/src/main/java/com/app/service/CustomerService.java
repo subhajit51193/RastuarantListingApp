@@ -22,5 +22,5 @@ public interface CustomerService {
 	
 //	---------------------------------------------------------------
 	
-	public Cart addToCart(Integer locationId,Integer restaurantId,Integer cuisineId,Long quantity) throws CustomerException,RestaurantException,LocationException,CuisinException;
+	public Cart addToCart(Integer cuisineId,Long quantity) throws CustomerException,RestaurantException,LocationException,CuisinException;
 }

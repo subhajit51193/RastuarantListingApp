@@ -18,7 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.exception.CuisinException;
+import com.app.exception.CustomerException;
+import com.app.exception.LocationException;
+import com.app.exception.RestaurantException;
+import com.app.model.Cart;
 import com.app.model.Customer;
+import com.app.repository.CuisinRepository;
+import com.app.service.CuisinService;
 import com.app.service.CustomerService;
 
 import jakarta.websocket.server.PathParam;
@@ -35,6 +42,11 @@ public class CustomerController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	
+//	---------------------------------------------------
+	
+	
 	
 
 	
@@ -101,9 +113,11 @@ public class CustomerController {
 //	-------------------------------------------------------------------------------
 //	-------------------------------------------------------------------------------
 	
-//	@GetMapping("/addToCart/{}")
-//	public ResponseEntity<Cart> addToCartHandler(){
-//	try request param for restaurant and location	
-//	}
+	@GetMapping("/addToCart/{id}/{quantity}")
+	public ResponseEntity<Cart> addToCartHandler(@PathVariable("id") Integer cuisineId,@PathVariable("quantity") Long quantity) throws CustomerException, RestaurantException, LocationException, CuisinException{
+		
+		Cart cart = customerService.addToCart(cuisineId, quantity);
+		return new ResponseEntity<Cart>(cart,HttpStatus.ACCEPTED);
+	}
 	
 }

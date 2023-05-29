@@ -27,7 +27,7 @@ public class RestaurantServiceImpl implements RestaurantService{
 	private CuisinRepository cuisinRepository;
 	
 	@Override
-	public Restaurant addRestaurant(Restaurant restaurant) throws RestaurantException {//not working need to check
+	public Restaurant addRestaurant(Restaurant restaurant) throws RestaurantException {
 		
 		Set<Location> locations = restaurant.getLocations();
 		Set<Cuisin> cuisins = restaurant.getCuisins();
@@ -36,31 +36,35 @@ public class RestaurantServiceImpl implements RestaurantService{
 //		if no restaurant found
 		if (optr.isEmpty()) {
 			
+			Restaurant newRestaurant = new Restaurant();
+			newRestaurant.setName(restaurant.getName());
+			newRestaurant.setAddress(restaurant.getAddress());
+			newRestaurant.setPhone(restaurant.getPhone());
 			for (Location location: locations) {
 				Optional<Location> optl = locationRepository.findByCity(location.getCity());
 				if (optl.isEmpty()) {
-					location.getRestaurants().add(restaurant);
-					restaurant.getLocations().add(location);
+					location.getRestaurants().add(newRestaurant);
+					newRestaurant.getLocations().add(location);
 					locationRepository.save(location);
 				}
 				else {
 					Location foundLocation = optl.get();
-					foundLocation.getRestaurants().add(restaurant);
-					restaurant.getLocations().add(foundLocation);
+					foundLocation.getRestaurants().add(newRestaurant);
+					newRestaurant.getLocations().add(foundLocation);
 					locationRepository.save(foundLocation);
 				}
 				
 			}
 			
 			for (Cuisin cuisin: cuisins) {
-				cuisin.setRestaurant(restaurant);
-				restaurant.getCuisins().add(cuisin);
+				cuisin.setRestaurant(newRestaurant);
+				newRestaurant.getCuisins().add(cuisin);
 				cuisinRepository.save(cuisin);
 			}
 			
-			Restaurant newRestaurant = restaurantRepository.save(restaurant);
-			if (newRestaurant != null) {
-				return newRestaurant;
+			Restaurant addedRestaurant = restaurantRepository.save(newRestaurant);
+			if (addedRestaurant != null) {
+				return addedRestaurant;
 			}
 			else {
 				throw new RestaurantException("Error");

@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.app.exception.CartException;
 import com.app.exception.CuisinException;
 import com.app.exception.CustomerException;
 import com.app.exception.LocationException;
@@ -101,7 +102,7 @@ public class CustomerServiceImpl implements CustomerService{
 
 	@Override
 	public Cart addToCart(Integer cuisineId, Long quantity)
-			throws CustomerException, RestaurantException, LocationException, CuisinException {
+			throws CustomerException, RestaurantException, LocationException, CuisinException, CartException {
 		
 		Optional<Customer> opt = customerRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 		System.out.println(opt.get());
@@ -122,7 +123,13 @@ public class CustomerServiceImpl implements CustomerService{
 				cart.setQuantity(quantity);
 				cart.setCuisin(cuisin);
 				cart.setRestaurant(restaurant);
-				return cartRepository.save(cart);//not working properly giving error simple type, class org.hibernate.proxy.pojo.bytebuddy.ByteBuddyInterceptor...
+				Cart newCart = cartRepository.save(cart);
+				if (newCart != null) {
+					return newCart;
+				}
+				else {
+					throw new CartException("Error");
+				}
 			}
 		}
 	}

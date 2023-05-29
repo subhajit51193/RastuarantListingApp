@@ -11,9 +11,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.app.exception.CartException;
 import com.app.exception.RestaurantException;
+import com.app.model.Authority;
+import com.app.model.Cart;
+import com.app.model.Cuisin;
+import com.app.model.Customer;
 import com.app.model.Restaurant;
+import com.app.repository.CartRepository;
 import com.app.repository.RestaurantRepository;
+import com.app.service.CustomerService;
 import com.app.service.RestaurantService;
 
 @SpringBootTest
@@ -25,6 +32,12 @@ class RestaurantListingAppApplicationTests {
 	
 	@MockBean
 	private RestaurantRepository restaurantRepository;
+	
+	@Autowired
+	private CustomerService customerService;
+	
+	@MockBean
+	private CartRepository cartRepository;
 	
 	
 	
@@ -45,7 +58,7 @@ class RestaurantListingAppApplicationTests {
 				});
 	}
 	@Test
-	void createRestaurantWithoutExceptionTest() throws RestaurantException {
+	void createRestaurantWithoutExceptionTest() throws RestaurantException {//error 
 		
 		Restaurant restaurant = new Restaurant();
 		restaurant.setRestaurantId(1);
@@ -57,5 +70,7 @@ class RestaurantListingAppApplicationTests {
 		when(restaurantRepository.save(restaurant)).thenReturn(restaurant);
 		assertEquals(restaurant, restaurantService.addRestaurant(restaurant));
 	}
+	
+	
 
 }

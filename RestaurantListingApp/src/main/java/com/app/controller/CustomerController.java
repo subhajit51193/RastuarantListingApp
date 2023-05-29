@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.app.exception.CartException;
 import com.app.exception.CuisinException;
 import com.app.exception.CustomerException;
 import com.app.exception.LocationException;
@@ -114,7 +115,7 @@ public class CustomerController {
 //	-------------------------------------------------------------------------------
 	
 	@GetMapping("/addToCart/{id}/{quantity}")
-	public ResponseEntity<Cart> addToCartHandler(@PathVariable("id") Integer cuisineId,@PathVariable("quantity") Long quantity) throws CustomerException, RestaurantException, LocationException, CuisinException{
+	public ResponseEntity<Cart> addToCartHandler(@PathVariable("id") Integer cuisineId,@PathVariable("quantity") Long quantity) throws CustomerException, RestaurantException, LocationException, CuisinException, CartException{
 		
 		Cart cart = customerService.addToCart(cuisineId, quantity);
 		return new ResponseEntity<Cart>(cart,HttpStatus.ACCEPTED);

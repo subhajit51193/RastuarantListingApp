@@ -29,6 +29,7 @@ public class Cart {
 	@JsonIgnore
 	private Customer customer;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "restaurant_id")
 	private Restaurant restaurant;

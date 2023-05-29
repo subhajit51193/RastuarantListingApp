@@ -3,6 +3,7 @@ import java.util.List;
 
 import org.springframework.security.core.Authentication;
 
+import com.app.exception.CartException;
 import com.app.exception.CuisinException;
 import com.app.exception.CustomerException;
 import com.app.exception.LocationException;
@@ -22,5 +23,5 @@ public interface CustomerService {
 	
 //	---------------------------------------------------------------
 	
-	public Cart addToCart(Integer cuisineId,Long quantity) throws CustomerException,RestaurantException,LocationException,CuisinException;
+	public Cart addToCart(Integer cuisineId,Long quantity) throws CustomerException,RestaurantException,LocationException,CuisinException, CartException;
 }

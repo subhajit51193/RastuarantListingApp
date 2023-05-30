@@ -38,9 +38,6 @@ public class Order {
 	@JoinColumn(name = "cust_id")
 	private Customer customer;
 	
-//	@OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-//	@JoinColumn(name = "order_id",referencedColumnName = "orderId")
-//	private Set<Cart> cart;
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)

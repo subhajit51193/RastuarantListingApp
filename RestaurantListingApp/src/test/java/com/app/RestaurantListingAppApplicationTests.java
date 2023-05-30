@@ -58,7 +58,7 @@ class RestaurantListingAppApplicationTests {
 				});
 	}
 	@Test
-	void createRestaurantWithoutExceptionTest() throws RestaurantException {//error 
+	void createRestaurantWithoutExceptionTest() throws RestaurantException  {
 		
 		Restaurant restaurant = new Restaurant();
 		restaurant.setRestaurantId(1);

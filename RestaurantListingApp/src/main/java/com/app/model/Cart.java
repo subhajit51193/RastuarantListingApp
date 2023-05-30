@@ -38,9 +38,6 @@ public class Cart {
 	@JoinColumn(name = "cuisine_id")
 	private Cuisin cuisin;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "location_id")
-//	private Location location;
 	
 	private Long quantity;
 }
